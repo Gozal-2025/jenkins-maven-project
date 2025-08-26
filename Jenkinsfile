@@ -1,19 +1,22 @@
 pipeline {
     agent any
+    tools {
+    maven 'maven-3.9.11'
+    }
     stages {
         stage('Test') {
             steps {
-                sh 'mvn -f hello-app/pom.xml test'
+                sh 'mvn test'
             }
             post {
                 always {
-                    junit 'hello-app/target/surefire-reports/*.xml'
+                    junit 'target/surefire-reports/*.xml'
                 }
             }
         }
         stage('Build') {
             steps {
-                sh 'mvn -f hello-app/pom.xml -B -DskipTests clean package'
+                sh 'mvn -B -DskipTests clean package'
             }
             post {
                 success {
